@@ -14,8 +14,8 @@ library(survminer)
 
 ### read in parquet database
 ```{r}
-NY_pq <- open_dataset("/Volumes/home/HCUPdata-CC0941-MEDSPH/ParquetData/NY", format = "parquet")
-NY_pq_df <- as.data.frame(NY_pq)
+NY_pq <- open_dataset("R:/ParquetData/NY", format = "parquet")
+#NY_pq_df <- as.data.frame(NY_pq)
 ```
 
 ### [Backup for SEDD]
@@ -225,7 +225,7 @@ saveRDS(NY_cohort1, '/Volumes/home/HCUPdata-CC0941-MEDSPH/myrrha/Data/total_coho
 
 ### Skip all former steps, direct write in total cohort as NY_cohort1
 ```{r}
-NY_cohort1 <- readRDS("/Volumes/home/HCUPdata-CC0941-MEDSPH/myrrha/Data/total_cohort.rds")
+NY_cohort1 <- readRDS("R:/myrrha/Data/total_cohort.rds")
 ```
 
 ### Cohort 2 add on: age_norm ; rsv_indi and details using ICD code
@@ -236,6 +236,7 @@ NY_cohort1 <- readRDS("/Volumes/home/HCUPdata-CC0941-MEDSPH/myrrha/Data/total_co
 NY_cohort2 <- NY_cohort1 %>%
   # Filter out rows with non-numeric values
   filter(
+    birth_year>=2016, #there are a handful of births in 2014/15 that should be excluded
     !admis_age_year %in% c( "A", "B", "C"),
     !admis_age_mon %in% c( "A", "B", "C"),
     !admis_age_day %in% c( "A", "B", "C")
